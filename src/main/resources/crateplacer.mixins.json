@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "petercrawley.starlegacy.crateplacer.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "InGameHudMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

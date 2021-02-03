@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "crateplacer",
+  "version": "${version}",
+  "name": "Crateplacer",
+  "description": "Saves your hand by placing crates for you.",
+  "authors": [
+    "PeterCrawley"
+  ],
+  "contact": {
+    "website": "https://github.com/Peter-Crawley",
+    "repo": "https://github.com/Peter-Crawley/Crateplacer"
+  },
+  "license": "MIT",
+  "icon": "assets/crateplacer/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "main": [
+      "petercrawley.starlegacy.crateplacer.Main"
+    ]
+  },
+  "mixins": [
+    "crateplacer.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.11.1",
+    "fabric": "*",
+    "minecraft": "1.16.5"
+  }
+}
