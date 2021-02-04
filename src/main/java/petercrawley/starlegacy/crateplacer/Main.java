@@ -12,14 +12,18 @@ import net.minecraft.tag.BlockTags;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.system.CallbackI;
 
 public class Main implements ModInitializer {
 
 	public static KeyBinding keyBind;
+
+	public static int ticksSensePlace;
 
 	@Override public void onInitialize() {
 		// Register Keybind to toggle mod
@@ -32,6 +36,11 @@ public class Main implements ModInitializer {
 
 		// Register Tick Action
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
+			ticksSensePlace++;
+			if (ticksSensePlace < 1) return;
+
+			ticksSensePlace = 0;
+
 			// If there is no world we will crash if we try to do anything, check if there is a world or not.
 			if (MinecraftClient.getInstance().world == null) {
 				keyBind.setPressed(false);
@@ -80,7 +89,12 @@ public class Main implements ModInitializer {
 											MinecraftClient.getInstance().player,
 											MinecraftClient.getInstance().world,
 											Hand.MAIN_HAND,
-											new BlockHitResult(pos, MinecraftClient.getInstance().world.getBlockState(new BlockPos(x, y, z)).get(Properties.FACING), new BlockPos(pos), true)
+											new BlockHitResult(
+													MinecraftClient.getInstance().player.getPos(),
+													MinecraftClient.getInstance().world.getBlockState(new BlockPos(x, y, z)).get(Properties.FACING),
+													new BlockPos(x, y, z),
+													false
+											)
 									);
 
 									return; // Don't do more then 1 per tick, its laggy and the server will hate you
