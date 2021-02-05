@@ -12,12 +12,10 @@ import net.minecraft.tag.BlockTags;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.system.CallbackI;
 
 public class Main implements ModInitializer {
 
@@ -82,22 +80,24 @@ public class Main implements ModInitializer {
 								// Determine crate position
 								Vec3d pos = new Vec3d(x + addPos.getX(), y + addPos.getY(), z + addPos.getZ());
 
-								// If there is not already a shulker there
-								if (!MinecraftClient.getInstance().world.getBlockState(new BlockPos(pos)).getBlock().isIn(BlockTags.SHULKER_BOXES)) {
-									// Place the block
-									MinecraftClient.getInstance().interactionManager.interactBlock(
-											MinecraftClient.getInstance().player,
-											MinecraftClient.getInstance().world,
-											Hand.MAIN_HAND,
-											new BlockHitResult(
-													MinecraftClient.getInstance().player.getPos(),
-													MinecraftClient.getInstance().world.getBlockState(new BlockPos(x, y, z)).get(Properties.FACING),
-													new BlockPos(x, y, z),
-													false
-											)
-									);
+								if (pos.isInRange(MinecraftClient.getInstance().player.getPos(), 5)) {
+									// If there is not already a shulker there
+									if (!MinecraftClient.getInstance().world.getBlockState(new BlockPos(pos)).getBlock().isIn(BlockTags.SHULKER_BOXES)) {
+										// Place the block
+										MinecraftClient.getInstance().interactionManager.interactBlock(
+												MinecraftClient.getInstance().player,
+												MinecraftClient.getInstance().world,
+												Hand.MAIN_HAND,
+												new BlockHitResult(
+														MinecraftClient.getInstance().player.getPos(),
+														MinecraftClient.getInstance().world.getBlockState(new BlockPos(x, y, z)).get(Properties.FACING),
+														new BlockPos(x, y, z),
+														false
+												)
+										);
 
-									return; // Don't do more then 1 per tick, its laggy and the server will hate you
+										return; // Don't do more then 1 per tick, its laggy and the server will hate you
+									}
 								}
 							}
 						}
