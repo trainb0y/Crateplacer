@@ -65,15 +65,6 @@ public class Main implements ModInitializer {
 								// Move to 9th Hotbar Slot
 								MinecraftClient.getInstance().player.inventory.selectedSlot = 8;
 
-								// If we are not holding a crate
-								if (!MinecraftClient.getInstance().player.getStackInHand(Hand.MAIN_HAND).getItem().getTranslationKey().endsWith("shulker_box")) {
-									for (int invSlot = 0; invSlot <= 40; invSlot++) {
-										if (MinecraftClient.getInstance().player.inventory.getStack(invSlot).getItem().getTranslationKey().endsWith("shulker_box")) {
-											MinecraftClient.getInstance().interactionManager.pickFromInventory(invSlot);
-										}
-									}
-								}
-
 								// Figure out the block we need to place the shulker relative to the piston
 								Vec3i addPos = MinecraftClient.getInstance().world.getBlockState(new BlockPos(x, y, z)).get(Properties.FACING).getVector();
 
@@ -83,6 +74,16 @@ public class Main implements ModInitializer {
 								if (pos.isInRange(MinecraftClient.getInstance().player.getPos(), 5)) {
 									// If there is not already a shulker there
 									if (!MinecraftClient.getInstance().world.getBlockState(new BlockPos(pos)).getBlock().isIn(BlockTags.SHULKER_BOXES)) {
+										// If we are not holding a crate
+										if (!MinecraftClient.getInstance().player.getStackInHand(Hand.MAIN_HAND).getItem().getTranslationKey().endsWith("shulker_box")) {
+											for (int invSlot = 40; invSlot >= 1; invSlot--) {
+												if (MinecraftClient.getInstance().player.inventory.getStack(invSlot).getItem().getTranslationKey().endsWith("shulker_box")) {
+													MinecraftClient.getInstance().interactionManager.pickFromInventory(invSlot);
+													break;
+												}
+											}
+										}
+
 										// Place the block
 										MinecraftClient.getInstance().interactionManager.interactBlock(
 												MinecraftClient.getInstance().player,
