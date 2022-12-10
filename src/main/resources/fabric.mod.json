@@ -5,14 +5,14 @@
   "name": "Crateplacer",
   "description": "Saves your hand by placing crates for you.",
   "authors": [
-    "PeterCrawley"
+    "PeterCrawley",
+	"trainb0y"
   ],
   "contact": {
     "website": "https://github.com/Peter-Crawley",
-    "repo": "https://github.com/Peter-Crawley/Crateplacer"
+    "repo": "https://github.com/trainb0y/Crateplacer"
   },
   "license": "MIT",
-  "icon": "assets/crateplacer/icon.png",
   "environment": "client",
   "entrypoints": {
     "main": [
@@ -23,8 +23,8 @@
     "crateplacer.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.11.1",
-    "fabric": "*",
-    "minecraft": "1.16.5"
+    "fabricloader": ">=0.14.10",
+    "fabric-api": "*",
+    "minecraft": ">=1.19.2"
   }
 }

@@ -5,11 +5,11 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.block.*;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.options.KeyBinding;
-import net.minecraft.client.options.StickyKeyBinding;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.option.StickyKeyBinding;
 import net.minecraft.state.property.Properties;
 import net.minecraft.tag.BlockTags;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -61,9 +61,9 @@ public class Main implements ModInitializer {
 						for (int z = zmin; z <= zmax; z++) {
 
 							// If the block is a sticky piston
-							if (MinecraftClient.getInstance().world.getBlockState(new BlockPos(x, y, z)).getBlock().is(Blocks.STICKY_PISTON)) {
+							if (MinecraftClient.getInstance().world.getBlockState(new BlockPos(x, y, z)).getBlock().getDefaultState().isOf(Blocks.STICKY_PISTON)) {
 								// Move to 9th Hotbar Slot
-								MinecraftClient.getInstance().player.inventory.selectedSlot = 8;
+								MinecraftClient.getInstance().player.getInventory().selectedSlot = 8;
 
 								// Figure out the block we need to place the shulker relative to the piston
 								Vec3i addPos = MinecraftClient.getInstance().world.getBlockState(new BlockPos(x, y, z)).get(Properties.FACING).getVector();
@@ -73,11 +73,11 @@ public class Main implements ModInitializer {
 
 								if (pos.isInRange(MinecraftClient.getInstance().player.getPos(), 5)) {
 									// If there is not already a shulker there
-									if (!MinecraftClient.getInstance().world.getBlockState(new BlockPos(pos)).getBlock().isIn(BlockTags.SHULKER_BOXES)) {
+									if (!MinecraftClient.getInstance().world.getBlockState(new BlockPos(pos)).getBlock().getDefaultState().isIn(BlockTags.SHULKER_BOXES)) {
 										// If we are not holding a crate
 										if (!MinecraftClient.getInstance().player.getStackInHand(Hand.MAIN_HAND).getItem().getTranslationKey().endsWith("shulker_box")) {
 											for (int invSlot = 40; invSlot >= 1; invSlot--) {
-												if (MinecraftClient.getInstance().player.inventory.getStack(invSlot).getItem().getTranslationKey().endsWith("shulker_box")) {
+												if (MinecraftClient.getInstance().player.getInventory().getStack(invSlot).getItem().getTranslationKey().endsWith("shulker_box")) {
 													MinecraftClient.getInstance().interactionManager.pickFromInventory(invSlot);
 													break;
 												}
@@ -87,7 +87,6 @@ public class Main implements ModInitializer {
 										// Place the block
 										MinecraftClient.getInstance().interactionManager.interactBlock(
 												MinecraftClient.getInstance().player,
-												MinecraftClient.getInstance().world,
 												Hand.MAIN_HAND,
 												new BlockHitResult(
 														MinecraftClient.getInstance().player.getPos(),
@@ -115,6 +114,6 @@ public class Main implements ModInitializer {
 	public static void print(Object str) {
 		str = String.valueOf(str);
 		if (str == "") return;
-		MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(new LiteralText(String.valueOf(str)));
+		MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.literal(String.valueOf(str)));
 	}
 }
